@@ -1,86 +1,100 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ */
 package com.mycompany.pruebalinkedlist;
 
 /**
- * @author Angel Daniel Valdez Robles
- * @date Aug 17, 2026
+ *
+ * @author Federico Cirett Galán
+ * @date   Aug 17, 2026
  */
-
 class Student {
     String name;
     int score;
+    int index;
     Student next;
-
     public Student(String name, int score) {
         this.name = name;
-        this.score = score;
+        this.score= score;
         this.next = null;
     }
 }
-
-class lnkdLst {
+class LnkdLst {
     Student head;
-    public lnkdLst() {
+    int index = 0;
+    public LnkdLst() // Constructor
+    {
         this.head = null;
     }
-
+    //Agrega un nuevo estudiante al final de la lista
     public void add(String name, int score) {
-        Student newStudent = new Student(name, score);
+        Student newStudent = new Student(name,score);
         if (head == null) {
             head = newStudent;
+            this.index++;
             return;
         }
-
         Student current = head;
-        while (current.next != null) {
+        while (current.next !=null){
             current = current.next;
         }
         current.next = newStudent;
+        this.index++;
     }
     public void print() {
         Student current = this.head;
-        while(current !=null) {
-            System.out.println(current.name + 
-                    " - " + current.score);
+        while (current !=null) {
+            System.out.println(current.name +
+                       " - " + current.score);
             current = current.next;
         }
     }
-    public Student retrieve(String searchedName) {
+        public Student retrieve(String searchedName) {
         Student current = this.head;
         while (current != null) {
-            if (current.name.equals(searchedName)) 
+            if (current.name.equals(searchedName))
             { return current; }
-            current = current.next;
+            current = current.next; //traverse the list
         }
-        return null; //not found
+        return null; // not found
     }
-    public void remove (int n) {
-        if(head == null) { return; } //empty list
-        if (n < 0) { return; } //negative index
+    public void remove(int n){
+        if (head == null) { return; } // Empty list
+        if (n < 0) { return; } // negative index
+        if (n>= this.index) { return; } //index out of bounds
         int index = 0;
-        Student current = head;
-        while (current !=null && index < (n-1)) {
+        Student current = head; 
+        while ( current !=null && index < (n-1)) {
             current = current.next;
             index++;
         }
-        while (current != null || current.next == null) {
-            return; //position out of range
+        if (current==null || current.next == null) {
+            return; // position out of range
         }
         current.next = current.next.next;
+        this.index--;
     }
 }
-
 public class PruebaLinkedList {
     public static void main(String[] args) {
-        lnkdLst lista = new lnkdLst();
-        lista.add("Linus", 90);
-        lista.add("Ada", 95);
-        lista.add("Paul", 78);
+        LnkdLst lista = new LnkdLst();
+        lista.add("Linus",90);
+        lista.add("Ada",95);
+        lista.add("Paul",78);
         lista.print();
-        Student found = lista.retrieve("Ada");
-        System.out.println("Found:"+found.name+" score: "+found.score);
-        Student notFound = lista.retrieve("Guido");
-        if (notFound != null) {
-            System.out.println("Found:"+found.name+" score:"+found.score);
+        Student s = lista.retrieve("Ada");
+        if (s != null) {
+            System.out.println("Found: " + s.name + " - " + s.score);
+        } else {
+            System.out.println("Student not found");
         }
+        lista.remove(1);
+        System.out.println("After removing the second student:");
+        lista.print();
+        
+        lista.remove(1);
+        System.out.println("After removing the third student:");
+        lista.print();
     }
 }
